@@ -28,6 +28,7 @@ export class ComptesListComponent implements OnInit {
 
     this.service.getAllCompte().subscribe(
       data=>{ this.data=data
+        console.log(data);
       },err=>{
         console.log(err);
         console.log(`Attention, il y a une erreur ${err}`)

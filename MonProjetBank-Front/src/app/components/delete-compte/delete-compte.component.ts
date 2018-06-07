@@ -12,7 +12,11 @@ import { Observable } from 'rxjs';
 export class DeleteCompteComponent implements OnInit {
 
   numero:String;
-  compte:Observable<Compte>;
+  compte:Compte={
+    'numero':'',
+    'proprietaire':'',
+    'solde':0
+  };
   PageCompte:any;
 
   constructor(private activatedRoute:ActivatedRoute,private service:ComptesService,private router : Router) { }
@@ -23,10 +27,17 @@ export class DeleteCompteComponent implements OnInit {
     console.log(JSON.parse(err._body).message);
   });
 
+  this.service.getAllCompte().subscribe(
+    PageCompte=>{ this.PageCompte=PageCompte
+    },err=>{
+      console.log(err);
+      console.log(`Attention, il y a une erreur ${err}`)
+    }
+  );
 
   this.service.getCompteByNumero(this.numero).
   subscribe(data=>{
-    this.PageCompte=data;
+    this.compte=data;
       },
 
       err=>{
@@ -39,9 +50,9 @@ export class DeleteCompteComponent implements OnInit {
     if(confirm==true){
     this.service.deleteCompte(compte.numero)
     .subscribe(data=>{
-      this.PageCompte.content.splice(
+      this.PageCompte=(
 
-        this.PageCompte.content.indexOf(compte),1
+        this.PageCompte.content.splice(this.PageCompte.content.indexOf(compte),1)
 
       );
       alert("Compte Supprimé")
