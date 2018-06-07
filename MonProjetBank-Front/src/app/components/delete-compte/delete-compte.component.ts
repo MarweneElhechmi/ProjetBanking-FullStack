@@ -45,24 +45,48 @@ export class DeleteCompteComponent implements OnInit {
   })
 
   }
+
+  /*****************************************************************************************/
+
+                              //  DELETE 1
+
   onDeleteCompte(compte:Compte){
   let confirm=window.confirm("Est-vous sûre de vouloir supprimer ce compte");
     if(confirm==true){
     this.service.deleteCompte(compte.numero)
     .subscribe(data=>{
-      this.PageCompte=(
-
-        this.PageCompte.content.splice(this.PageCompte.content.indexOf(compte),1)
+      this.PageCompte.splice(
+        this.PageCompte.indexOf(compte),1
 
       );
       alert("Compte Supprimé")
+      this.router.navigate(['list']);
     },err=>{
       console.log(err);
       alert("Erreur! Compte non supprimé");
     })
+  }else{
+    this.router.navigate(['list']);
   }
-    this.router.navigate(['/list']);
+}
+
+/*****************************************************************************************/
+                           //  DELETE 2
+  DeleteCompte(){
+    let confirm=window.confirm("Est-vous sûre de vouloir supprimer ce compte");
+    if(confirm==true){
+      this.service.deleteCompte(this.numero)
+      .subscribe(data=>{
+        alert("Compte Supprimé")
+        this.router.navigate(['list']);
+      },err=>{
+        console.log(err);
+        alert("Erreur! Compte non supprimé");
+      })
+    }else{
+    this.router.navigate(['list']);
   }
+}
 
   annulerDelete(){
     this.router.navigate(['/list']);
